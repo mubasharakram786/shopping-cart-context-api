@@ -1,7 +1,10 @@
-import React from 'react'
+import { useProducts } from '../context/ProductContext'
 import ProductCard from './ProductCard'
 
-const ProductList = ({products}) => {
+const ProductList = () => {
+  const {products,loading,error} = useProducts()
+  {loading && <p>loading...</p>}
+  {error && <div className='error'>{error}</div>}
   return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {products.map((product)=>(
