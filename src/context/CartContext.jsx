@@ -3,7 +3,10 @@ import { useState,useContext,useEffect,createContext } from "react";
 export const CartContext = createContext()
 
 export function CartProvider({children}){
-    const [cart, setCart] = useState([])
+    const [cart, setCart] = useState(()=>{
+      let cartItems = window.localStorage.getItem('cart')
+       return cartItems ? JSON.parse(cartItems) : []
+    })
 
     const addToCart = (product) =>{
         setCart((prev)=>{
@@ -20,6 +23,11 @@ export function CartProvider({children}){
         setCart((prev)=> prev.filter((item)=> item.id !== id))
     }
     const clearCart = () => setCart([])
+
+    useEffect(()=>{
+        window.localStorage.setItem('cart', JSON.stringify(cart))
+    },[cart])
+
     return(
         <CartContext.Provider value={{cart,addToCart,removeFromCart,clearCart}}>
             {children}
